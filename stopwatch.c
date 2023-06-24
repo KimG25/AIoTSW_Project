@@ -77,7 +77,7 @@ void FndDisplay(int position, int num) {
 
     for (i = 0; i < 8; i++) {
         flag = (FndFont[num] & shift);
-        if (i == 7 && (position == 3 || position == 5)) {
+        if (i == 7 && (position == 2 || position == 5)) {
             flag |= 0x80;
         }
         digitalWrite(FndPin[i], flag);
@@ -114,11 +114,12 @@ void* fndThread(void* arg) {
             unsigned int seconds = (elapsed / 1000) % 60; // 초 단위 계산
             unsigned int milliseconds = (elapsed % 1000) / 10; // 밀리초 단위 계산
 
-            data[5] = minutes % 10; // 일의 자리 분
-            data[4] = seconds / 10; // 십의 자리 초
-            data[3] = seconds % 10; // 일의 자리 초
-            data[2] = milliseconds / 10; // 십의 자리 밀리초
-            data[1] = milliseconds % 10; // 일의 자리 밀리초
+            data[5] = minutes % 100; // 십의 자리 분
+            data[4] = minutes % 10; // 일의 자리 분
+            data[3] = seconds / 10; // 십의 자리 초
+            data[2] = seconds % 10; // 일의 자리 초
+            data[1] = milliseconds / 10; // 십의 자리 밀리초
+            data[0] = milliseconds % 10; // 일의 자리 밀리초
 
             if(minutes == 10){ //오버 플로우 시 스레드 종료
                 break;
